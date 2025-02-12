@@ -8,12 +8,21 @@ importers:
 
   .:
     dependencies:
+      canvas-fireworks:
+        specifier: ^1.0.1
+        version: 1.0.1
       core-js:
         specifier: ^3.8.3
         version: 3.40.0
+      fireworks-js:
+        specifier: ^2.10.8
+        version: 2.10.8
       vue:
         specifier: ^3.2.13
         version: 3.5.13
+      vue-router:
+        specifier: ^4.5.0
+        version: 4.5.0(vue@3.5.13)
     devDependencies:
       '@babel/core':
         specifier: ^7.12.16
@@ -911,6 +920,9 @@ packages:
   '@vue/component-compiler-utils@3.3.0':
     resolution: {integrity: sha512-97sfH2mYNU+2PzGrmK2haqffDpVASuib9/w2/noxiFi31Z54hW+q3izKQXXQZSNhtiUpAI36uSuYepeBe4wpHQ==}
 
+  '@vue/devtools-api@6.6.4':
+    resolution: {integrity: sha512-sGhTPMuXqZ1rVOk32RylztWkfXTRhuS7vgAKv0zjqk8gbsHkJ7xfFf+jbySxt7tWObEJwyKaHMikV/WGDiQm8g==}
+
   '@vue/reactivity@3.5.13':
     resolution: {integrity: sha512-NaCwtw8o48B9I6L1zl2p41OHo/2Z4wqYGGIK1Khu5T7yxrn+ATOixn/Udn2m+6kZKB/J7cuT9DbWWhRxqixACg==}
 
@@ -1212,6 +1224,9 @@ packages:
 
   caniuse-lite@1.0.30001699:
     resolution: {integrity: sha512-b+uH5BakXZ9Do9iK+CkDmctUSEqZl+SP056vc5usa0PL+ev5OHw003rZXcnjNDv3L8P5j6rwT6C0BPKSikW08w==}
+
+  canvas-fireworks@1.0.1:
+    resolution: {integrity: sha512-DCa2zcfDELqR2m7J9Vk4fVdNDZx+D43K8Vn+FfzhyXG7abfSxLtMuA+ruUK4WWWR11VParMQrzeTymRsrfaP7w==}
 
   case-sensitive-paths-webpack-plugin@2.4.0:
     resolution: {integrity: sha512-roIFONhcxog0JSSWbvVAh3OocukmSgpqOH6YpMkCvav/ySIV3JKg4Dc8vYtQjYi/UxpNE36r/9v+VqTQqgkYmw==}
@@ -1971,6 +1986,9 @@ packages:
   find-up@4.1.0:
     resolution: {integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==}
     engines: {node: '>=8'}
+
+  fireworks-js@2.10.8:
+    resolution: {integrity: sha512-UZNxeJvRmQzLisN4iriWXqKojG9TDJqc0dPmkUw0/+AEQQ3w8z1Jx2YdFSiBGSVb/u4dPTQXU109GMVblzhfpg==}
 
   flat-cache@3.2.0:
     resolution: {integrity: sha512-CYcENa+FtcUKLmhhqyctpclsq7QF38pKjZHsGNiSQF5r4FtoKDWabFDl3hzaEQMvT1LHEysw5twgLvpYYb4vbw==}
@@ -3604,6 +3622,11 @@ packages:
       vue:
         optional: true
 
+  vue-router@4.5.0:
+    resolution: {integrity: sha512-HDuk+PuH5monfNuY+ct49mNmkCRK4xJAV9Ts4z9UFc4rzdDnxQLyCMGGc8pKhZhHTVzfanpNwB/lwqevcBwI4w==}
+    peerDependencies:
+      vue: ^3.2.0
+
   vue-style-loader@4.1.3:
     resolution: {integrity: sha512-sFuh0xfbtpRlKfm39ss/ikqs9AbKCoXZBpHeVZ8Tx650o0k0q/YCM7FRvigtxpACezfq6af+a7JeqVTWvncqDg==}
 
@@ -5117,6 +5140,8 @@ snapshots:
       - walrus
       - whiskers
 
+  '@vue/devtools-api@6.6.4': {}
+
   '@vue/reactivity@3.5.13':
     dependencies:
       '@vue/shared': 3.5.13
@@ -5472,6 +5497,13 @@ snapshots:
       lodash.uniq: 4.5.0
 
   caniuse-lite@1.0.30001699: {}
+
+  canvas-fireworks@1.0.1:
+    dependencies:
+      core-js: 3.40.0
+      vue: 3.5.13
+    transitivePeerDependencies:
+      - typescript
 
   case-sensitive-paths-webpack-plugin@2.4.0: {}
 
@@ -6165,6 +6197,8 @@ snapshots:
     dependencies:
       locate-path: 5.0.0
       path-exists: 4.0.0
+
+  fireworks-js@2.10.8: {}
 
   flat-cache@3.2.0:
     dependencies:
@@ -7766,6 +7800,11 @@ snapshots:
       webpack: 5.97.1
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.13
+      vue: 3.5.13
+
+  vue-router@4.5.0(vue@3.5.13):
+    dependencies:
+      '@vue/devtools-api': 6.6.4
       vue: 3.5.13
 
   vue-style-loader@4.1.3:
