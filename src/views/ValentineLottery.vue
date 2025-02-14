@@ -32,25 +32,56 @@
       </div>
       <p class="signature-text">Ambi 爱 木曦 每一天</p>
     </div>
+
+    <!-- 添加音频元素 -->
+    <audio id="fireworksSound" preload="auto" loop>
+      <source src="/sounds/fireworks.wav" type="audio/mpeg">
+    </audio>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Fireworks } from 'fireworks-js'
-import giftData from '@/assets/data/gifts.json'
 
-// 礼物列表配置
-const giftList = giftData.gifts
+// 修改礼物列表加载方式
+const giftList = ref([])
 
 const currentGift = ref(null)
 const isAnimating = ref(false)
 
-let fireworksInstance = null
+// 加载礼物列表
+const loadGifts = async () => {
+  try {
+    const response = await fetch('/data/gifts.json')
+    const data = await response.json()
+    giftList.value = data.gifts
+  } catch (error) {
+    console.error('加载礼物列表失败:', error)
+    // 设置默认礼物列表以防加载失败
+    giftList.value = [
+      {
+        name: "浪漫烛光晚餐",
+        desc: "与你共享温馨时光，让烛光见证我们的爱情"
+      },
+      // ... 可以添加更多默认礼物
+    ]
+  }
+}
 
-onMounted(() => {
+let fireworksInstance = null
+let fireworksSound = null
+
+onMounted(async () => {
+  // 加载礼物列表
+  await loadGifts()
+
+  // 初始化音频
+  fireworksSound = document.getElementById('fireworksSound')
+  fireworksSound.volume = 0.5  // 设置音量为50%
+  
+  // 初始化烟花
   const container = document.getElementById('fireworks')
-  // 初始化烟花实例
   fireworksInstance = new Fireworks(container, {
     autoresize: true,
     opacity: 0.5,
@@ -107,6 +138,11 @@ onUnmounted(() => {
     fireworksInstance.stop()
     fireworksInstance = null
   }
+  // 停止并清理音频
+  if (fireworksSound) {
+    fireworksSound.pause()
+    fireworksSound.currentTime = 0
+  }
 })
 
 const startLottery = () => {
@@ -115,20 +151,29 @@ const startLottery = () => {
   let times = 0
   const maxTimes = 20
   const interval = setInterval(() => {
-    currentGift.value = giftList[Math.floor(Math.random() * giftList.length)]
+    currentGift.value = giftList.value[Math.floor(Math.random() * giftList.value.length)]
     times++
     
     if (times >= maxTimes) {
       clearInterval(interval)
       isAnimating.value = false
       
-      // 开始放烟花
       if (fireworksInstance) {
         fireworksInstance.start()
-        // 8秒后停止烟花
+        // 播放烟花音效
+        if (fireworksSound) {
+          fireworksSound.currentTime = 0  // 重置音频播放位置
+          fireworksSound.play().catch(e => console.log('音频播放失败:', e))
+        }
+        
         setTimeout(() => {
           fireworksInstance.stop()
-        }, 8000)
+          // 停止音效
+          if (fireworksSound) {
+            fireworksSound.pause()
+            fireworksSound.currentTime = 0
+          }
+        }, 60000)  // 改为 60000 毫秒
       }
     }
   }, 100)
@@ -257,7 +302,8 @@ const startLottery = () => {
   left: 0;
   right: 0;
   text-align: center;
-  animation: fadeIn 1s ease-out;
+  animation: fadeInUp 1.5s ease-out;
+  z-index: 100;
 }
 
 .hearts {
@@ -267,11 +313,14 @@ const startLottery = () => {
 .hearts span {
   font-size: 1.5rem;
   margin: 0 5px;
+  display: inline-block;
   animation: heartBeat 1.5s infinite;
+  filter: drop-shadow(0 0 5px rgba(255, 20, 147, 0.5));
 }
 
 .hearts span:nth-child(2) {
   animation-delay: 0.5s;
+  font-size: 1.7rem;
 }
 
 .hearts span:nth-child(3) {
@@ -284,6 +333,24 @@ const startLottery = () => {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   font-weight: bold;
   letter-spacing: 2px;
+  transform: translateY(0);
+  animation: floatText 3s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(40px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatText {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
 @keyframes heartBeat {
@@ -292,10 +359,6 @@ const startLottery = () => {
   28% { transform: scale(1); }
   42% { transform: scale(1.3); }
   70% { transform: scale(1); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  100% { transform: scale(1); }
 }
 </style> 
